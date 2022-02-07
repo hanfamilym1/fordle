@@ -1,6 +1,6 @@
-const Square = ({ letter, type }) => {
+const Square = ({ item }) => {
   return (
-    <div className={`square ` + type } >{letter}</div>
+    <div className={`square ${item.status}`} >{item.letter.toUpperCase()}</div>
   )
 }
 
