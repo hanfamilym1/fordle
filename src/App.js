@@ -71,6 +71,7 @@ const App = () => {
       updateWord(correctItems)
       setTries(tries => tries+=1)
       setTypedWord('')
+      console.log(actuals)
       // printBoard(correctItems.sort((a,b) => a.typedIndex - b.typedIndex))
     }
   }
@@ -144,6 +145,7 @@ const App = () => {
   useEffect(()=> {
     typeWord()
     // generateBoard()
+    // eslint-disable-next-line
   }, [typedWord])
 
   // useEffect(()=> {
