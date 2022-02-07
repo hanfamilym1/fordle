@@ -93,7 +93,7 @@ const App = () => {
       }
     })
     showBoard(typedArr)
-    if(typedArr.filter(item => item.status === 'correct')) setIsWon(true)
+    if(typedArr.filter(item => item.status === 'correct').length === 5) setIsWon(true)
   }
 
   const handleType = (e) => {
