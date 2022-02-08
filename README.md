@@ -2,7 +2,7 @@
 
 Initial thoughts: obviously, Wordle is very trendy and showcases how a limiter and sharing functionality creates a platform where people can compete and enjoy sharing their 'wins'
 
-Original game: [Wordle](https://www.powerlanguage.co.uk/wordle/){target="\_blank"}
+Original game: [Wordle](https://www.powerlanguage.co.uk/wordle/)
 
 Goals:
 
@@ -31,8 +31,8 @@ To be determined...
 
 If there are any changes you'd make or any ideas that pop up feel free to connect with me :)
 
-[Website][website]{target="\_blank"}
-[LinkedIn][linkedin]{target="\_blank"}
+[Website][website]
+[LinkedIn][linkedin]
 
 [website]: https://hanmichael.com
 [linkedin]: https://linkedin.com/in/michaelhan2
