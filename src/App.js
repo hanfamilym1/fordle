@@ -97,7 +97,8 @@ const App = () => {
   }
 
   const handleType = (e) => {
-    setTypedWord(e.target.value.toLowerCase())
+    console.log(e)
+    if(typedWord.length < 5) setTypedWord(e.target.value.toLowerCase())
   }
 
   const typeWord = () => {
@@ -108,10 +109,10 @@ const App = () => {
       }
     })
 
-    if(newBoard.length < 5) {
+    if(newBoard.length < 6) {
       newBoard = [...newBoard, ...Array(5-newBoard.length).fill({ letter: '', status: 'blank'})]
+      showBoard(newBoard)
     }
-    showBoard(newBoard)
   }
 
   const showBoard = (arr) => {
@@ -126,15 +127,12 @@ const App = () => {
         setRowThree(arr)
         break
       case 3:
-        setRowThree(arr)
-        break
-      case 4:
         setRowFour(arr)
         break
-      case 5:
+      case 4:
         setRowFive(arr)
         break
-      case 6:
+      case 5:
         setRowSix(arr)
         break
       default:
