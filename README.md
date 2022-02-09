@@ -23,9 +23,33 @@ Thoughts about Day 1: It has been a blast! Basically, it was fun just to code so
 
 ## Day 2
 
-To be determined...
+[X] Handles Error States (very minimal error handling)
+[X] Is the word a real word?  
+ [X] What if you press enter before the word is complete?  
+[X] Winner  
+ [X]] Presents a modal that allows you to share your stat  
+ [1/2] Creates a copy of the clipboard of the emojis needed for them
 
-[] Work on it. :)
+## Day 3
+
+To Be Determined
+
+## Comments and Bugs
+
+[X] Couldn't backspace after 5. 2/9/2022  
+[X] Acceptance of fake words. 2/9/2022
+[ ] Showing of the letters you've used.  
+[ ] Special characters shouldn't be allowed.
+[ ] When double letters in a word, I need to fix logic so it tracks right index.
+
+## Current Stack
+
+- React
+
+## API's (Not currently 100% used)
+
+- Random Words API
+- WordsAPI
 
 ## Contact Me
 
