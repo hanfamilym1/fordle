@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useWordApi } from './hooks/useWordApi'
 import Square from './components/Square';
 import './App.css';
 
@@ -25,7 +26,7 @@ const App = () => {
       status: 'blank'
     }
   ]
-  const [word] = useState('spicy')
+  const [word] = useState('alive')
   const [typedWord, setTypedWord] = useState('')
   const [tries, setTries] = useState(0)
   const [actuals, setActuals] = useState([])
@@ -36,43 +37,54 @@ const App = () => {
   const [rowFive, setRowFive] = useState(initialRow)
   const [rowSix, setRowSix] = useState(initialRow)
   const [isWon, setIsWon] = useState(false)
+  const [cantPlay, setCantPlay] = useState(false)
+  const { checkIsWord } = useWordApi()
 
-  const checkWord = () => {
+
+  const checkWord = async () => {
     const wordArr = word.split('')
     const typedArr = typedWord.split('')
     const correctItems = []
     if(typedArr.length !== wordArr.length) {
-      alert('whatttt')
+      // Create more of a message versus a full alert
+      alert('Not enough letters')
     } else {
-      setActuals(curr => [...curr, typedArr])
-      for (let i=0 ; i < wordArr.length; i++){
-        for(let j=0; j < typedArr.length; j++){
-          console.log(wordArr[i], typedArr[j])
-          if(wordArr[i] === typedArr[j] && i === j){
-            console.log('same letter and same index', i, j)
-            correctItems.push({
-              rightIndex: i,
-              typedIndex: j,
-              letter: typedArr[j],
-              status: 'correct'
-            })
-          } else if (wordArr[i] === typedArr[j]) {
-            console.log('same letter, but not same index', i, j)
-            correctItems.push({
-              rightIndex: i,
-              typedIndex: j,
-              letter: typedArr[j],
-              status: 'almost'
-            })
+      // is the typed word a word?
+      try {
+        const isActualWord = await checkIsWord(typedWord)
+        if (isActualWord) {
+          setActuals(curr => [...curr, typedArr])
+          for (let i=0 ; i < wordArr.length; i++){
+            for(let j=0; j < typedArr.length; j++){
+              if(wordArr[i] === typedArr[j] && i === j){
+                correctItems.push({
+                  rightIndex: i,
+                  typedIndex: j,
+                  letter: typedArr[j],
+                  status: 'correct'
+                })
+              } else if (wordArr[i] === typedArr[j]) {
+                correctItems.push({
+                  rightIndex: i,
+                  typedIndex: j,
+                  letter: typedArr[j],
+                  status: 'almost'
+                })
+              }
+            }
           }
+          updateWord(correctItems)
+          setTries(tries => tries+=1)
+          setTypedWord('')
+          console.log(actuals)
+        } else {
+          alert('Not a word')
+          setTypedWord('')
         }
       }
-      console.log(correctItems)
-      updateWord(correctItems)
-      setTries(tries => tries+=1)
-      setTypedWord('')
-      console.log(actuals)
-      // printBoard(correctItems.sort((a,b) => a.typedIndex - b.typedIndex))
+      catch(err) {
+        console.error(err)
+      }
     }
   }
 
@@ -97,8 +109,7 @@ const App = () => {
   }
 
   const handleType = (e) => {
-    console.log(e)
-    if(typedWord.length < 5) setTypedWord(e.target.value.toLowerCase())
+    setTypedWord(e.target.value.toLowerCase())
   }
 
   const typeWord = () => {
@@ -142,13 +153,8 @@ const App = () => {
 
   useEffect(()=> {
     typeWord()
-    // generateBoard()
     // eslint-disable-next-line
   }, [typedWord])
-
-  // useEffect(()=> {
-  //   console.log(rowOne1)
-  // }, [rowOne1])
 
   const generateBoard = (arr) => {
     const newBoard = (
@@ -162,17 +168,17 @@ const App = () => {
         }
       </div>
       )
-    // KEEP WHEN MAKING A RANDOM BOARD
-    // const newBoard = Array(tries).fill(1).map(row => {
-    //   const columns = Array(length).fill(1).map(col => <Square letter={col} />)
-    //   return <div className='row'>{columns}</div>
-    // })
     return newBoard
+  }
+
+  const closeModal = () => {
+    setIsWon(false)
+    setCantPlay(true)
   }
   
   return (
     <div className="App">
-      <h1>Fake Wordle</h1>
+      <h1>Fake Wordle 2 (2/9/2022)</h1>
       <div className='board'>
         {generateBoard(rowOne)}
         {generateBoard(rowTwo)}
@@ -184,14 +190,28 @@ const App = () => {
       <div className='type-container'>
         {typedWord}
         <input 
+          maxLength='5'
           value={typedWord} 
-          onChange={handleType}/>
-        <button onClick={checkWord}>Enter</button>
+          onChange={handleType}
+          disabled={cantPlay}
+          />
+        <button 
+          onClick={checkWord}
+          disabled={cantPlay}
+          >
+            Enter
+        </button>
       </div>
       {
         isWon && (
-          <div>
-            YOU WON
+          <div className='win-modal'>
+            <div className='win-container'>
+              <h2>Fordle 2</h2>
+              <h3>You did it in {tries} / 6</h3>
+              {/* <h3>Show Emoji's</h3> */}
+              <button onClick={() => alert('Next Feature: will copy emojis to clipboard')}>Share</button>
+              <button onClick={closeModal}>X</button>
+            </div>
           </div>
         )
       }
